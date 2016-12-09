@@ -1,0 +1,69 @@
+#include "sellerwindow.h"
+#include "ui_sellerwindow.h"
+
+SellerWindow::SellerWindow(QSharedPointer<SMenuDB> &smdb, QSharedPointer<UserDS> &SessionUser, QWidget *parent) :
+    QWidget(parent),SessionUser(SessionUser), smdb(smdb),
+    ui(new Ui::SellerWindow)
+{
+    ui->setupUi(this);
+}
+
+SellerWindow::~SellerWindow()
+{
+    delete ui;
+}
+
+void SellerWindow::on_pbupgrade_clicked()
+{
+
+}
+
+void SellerWindow::on_pborder_clicked()
+{
+    hide();
+    emit showosw();
+}
+
+void SellerWindow::on_pblogout_clicked()
+{
+    SessionUser.clear();
+
+    hide();
+    emit showlw();
+}
+
+void SellerWindow::showSellerw()
+{
+    ui->tvmenu->setShowGrid(false);
+    ui->tvmenu->verticalHeader()->setVisible(false);
+    ui->tvmenu->setFrameShape(QFrame::NoFrame);
+    ui->tvmenu->setAutoScroll(true);
+    ui->lname->setText(SessionUser->getUsername());
+
+
+    std::map<std::string, int> menu = smdb->getMenu(SessionUser->getUid());
+    int countrow = menu.size();
+    model=new QStandardItemModel(countrow+1, 2, this);
+    ui->tvmenu->setModel(model);
+    ui->tvmenu->setColumnWidth(0,345);
+    ui->tvmenu->setColumnWidth(1,50);
+
+    for(int i = 0; i < countrow; i++)
+    {
+        ui->tvmenu->setRowHeight(i,50);
+    }
+
+    BarDelegate *delegate=new BarDelegate(this);
+    ui->tvmenu->setItemDelegateForColumn( 1, delegate );
+
+    std::map<std::string, int>::iterator cursor = menu.begin();
+    for( int r=0 ; r<countrow; ++r, cursor++)
+    {
+      QStandardItem *item = new QStandardItem( QString("%1").arg(QString::fromStdString(cursor->first)) );
+      item->setEditable( true );
+      model->setItem( r, 0, item );
+      model->setItem( r, 1, new QStandardItem( QString::number(cursor->second)) );
+    }
+
+    this->show();
+}
