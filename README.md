@@ -1,11 +1,28 @@
 # Qt-Demo
-This Project is based in Qt 5.0 and SqlServer. It's a simple demo for takeaway.
+应用简介:
 
-The following are the users' features of the project:<br>
-   a.log in<BR>
-   b.register<br>
-   c.order<br>
-The following are the shops' features of the project:<br>
-   a.log in<br>
-   b.register<br>
-   c.setting menu<br>
+  这是一个简单的基于Qt实现的外卖订餐系统。
+  
+*应用模块*
+---
+
+- 顾客模块
+- 商家模块
+   
+*应用功能*
+---
+共同功能:
+
+- 登录
+- 注册
+
+商家模块:
+
+- 订单查看
+- 菜单操作
+
+顾客模块:
+
+- 选商家
+- 选菜
+- 查看订单详情
